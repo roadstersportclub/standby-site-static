@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Servidor en proceso de mantenimiento</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Servidor en proceso de mantenimiento</h1>
+
+    <p class="local-time">
+      Hora del servidor: <span id="local-time-value">--:--:--</span>
+    </p>
+
+    <p>
+      Estamos realizando tareas de mantenimiento programado. El servicio será restablecido en breve. Disculpen las molestias.
+      <p/>
+      Atentamente, el equipo de Roadster Sport Club.
+    </p>
+
+    <img src="/logo.png"/>
+  </div>
+
+  <script>
+    const localTimeElement = document.getElementById('local-time-value');
+
+    async function setServerTime() {
+      try {
+        const response = await fetch(window.location.href, {
+          method: 'HEAD',
+          cache: 'no-store'
+        });
+
+        const serverDateHeader = response.headers.get('date');
+
+        if (!serverDateHeader) {
+          throw new Error('Date header missing');
+        }
+
+        const serverDate = new Date(serverDateHeader);
+        localTimeElement.textContent = serverDate.toLocaleTimeString('es-ES', {
+          hour12: false
+        });
+      } catch {
+        localTimeElement.textContent = 'No disponible';
+      }
+    }
+
+    setServerTime();
+  </script>
+
+</body>
+</html>
